@@ -1,0 +1,292 @@
+\documentclass[12pt,a4paper]{article}
+
+%\usepackage[colorlinks,allcolors=black,pdftex]{hyperref}
+
+\usepackage{wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bbold}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{titling}
+\usetikzlibrary{positioning}
+
+\newtheoremstyle{case}{}{}{}{}{}{:}{ }{}
+\theoremstyle{case}
+\newtheorem{case}{Case}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\comment}[1]{\textcolor{NavyBlue}{#1}}
+\newcommand{\todo}[1]{\textcolor{ForestGreen}{#1}}
+\newcommand{\correct}[1]{\textcolor{Red}{#1}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\s}{\mathbb{S}}
+\newcommand{\p}{\mathbb{P}}
+\newcommand{\Sym}{\hbox{Sym}}
+\newcommand{\Gal}{\hbox{Gal}}
+\newcommand{\Hom}{\hbox{Hom}}
+\newcommand{\Mor}{\hbox{Mor}}
+\newcommand{\Mat}{\hbox{Mat}}
+\newcommand{\Aut}{\hbox{Aut}}
+\newcommand{\adj}{\hbox{adj}}
+\newcommand{\Ht}{\text{ht}}
+\newcommand{\Vect}{\mathbf{Vec}}
+\newcommand{\Diag}{\hbox{Diag}}
+\newcommand{\tr}{\hbox{tr}}
+\newcommand{\Tr}{\hbox{Tr}}
+\newcommand{\Span}{\hbox{span}}
+\newcommand{\Cent}{\hbox{Cent}}
+\newcommand{\GL}{\hbox{GL}}
+\newcommand{\id}{\hbox{id}}
+\newcommand{\Mon}{\hbox{Mon}}
+\newcommand{\Ext}{\hbox{Ext}}
+\newcommand{\Tor}{\hbox{Tor}}
+\newcommand{\Spec}{\hbox{Spec}}
+\newcommand{\scr}[1]{\mathscr{#1}}
+
+\newcommand{\cc}{\mathfrak{C}}
+
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{exercise}{Exercise}
+
+\preauthor{}
+\postauthor{}
+\author{}
+\title{My Coq Reference Sheet}
+\date{2021}
+
+\begin{document}
+\maketitle
+
+
+
+\section{Nat}
+\subsection{Definition}
+\begin{verbatim}
+Inductive nat : Type :=
+  | O
+  | S (n : nat).
+\end{verbatim}
+\subsection{Important Functions}
+\begin{itemize}
+    \item eqb (n m : nat) : bool := returns true iff $n=m$. Notation is $x =? y$
+    \item plus (n : nat) (m : nat) : nat := $n + m$
+    \item mult (n m : nat) : nat := $n*m$
+    \item minus (n m:nat) : nat := $n-m$
+    \item exp (base power : nat) : nat := $base^{power}$
+    \item pred (n : nat) : nat := returns the number before n $($pred 2 $\Rightarrow$ 1, pred 0 $\Rightarrow$ 0)
+    \item even (n:nat) : bool := returns if a number is even
+    \item odd (n:nat) : bool := $\neg $even n
+    \item factorial (n:nat) : nat := $n!$
+    \item leb (n m : nat) : bool := returns true iff $n\leq m$. Notation is $x <=? y$
+\end{itemize}
+\subsection{Theorems}
+\begin{itemize}
+    \item plus\_O\_n : $\forall$ n : nat, 0 + n = n.
+    \item add\_0\_r : $\forall$ n:nat, n + 0 = n.
+    \item plus\_n\_Sm : $\forall$ n m : nat, S (n + m) = n + (S m). (also known as sum\_add\_one)
+    \item add\_comm : $\forall$ n m : nat, n + m = m + n.
+    \item add\_assoc : $\forall$ n m p : nat, n + (m + p) = (n + m) + p.
+    \item plus\_1\_l : $\forall$ n:nat, 1 + n = S n.
+    \item mult\_0\_l : $\forall$ n:nat, 0 * n = 0.
+    \item mul\_0\_r : $\forall$ n:nat, n * 0 = 0.
+    \item mult\_n\_1 : $\forall$ p : nat, p * 1 = p. 
+    \item n\_mul\_1\_plus\_k : $\forall$ n k : nat, n * (S k) = n + n * k .
+    \item mul\_comm : $\forall$ m n : nat, m * n = n * m.
+    \item minus\_n\_n : $\forall$ n, minus n n = 0.
+    \item S\_injective : $\forall$ (n m : nat), S n = S m $\Rightarrow$ n = m.
+    \item eq\_implies\_succ\_equal : $\forall$ (n m : nat), n = m $\Rightarrow$ S n = S m.
+    \item eqb\_0\_l : $\forall$ n, 0 =? n = true $\Rightarrow$ n = 0.
+    \item eqb\_true : $\forall$ n m, n =? m = true $\Rightarrow$ n = m.
+    \item plus\_n\_n\_injective : $\forall$ n m, n + n = m + m $\Rightarrow$ n = m.
+    \item zero\_or\_succ : $\forall$ n : nat, n = 0 $\lor$ n = S (pred n).
+    
+
+\end{itemize}
+
+
+
+\section{List}
+\subsection{Definition}
+\begin{verbatim}
+Inductive list (X:Type) : Type :=
+  | nil
+  | cons (x : X) (l : list X).
+\end{verbatim}
+\subsection{Important Functions}
+\begin{itemize}
+    \item In (x : A) (l : list A) : Prop := returns a prop relating whether \textit{x} is in \textit{l}.
+    \item rev (l:list X) : list X := reverses l. 
+    \item length (l : list X) : nat := length of l. 
+    \item repeat (x : X) (count : nat) : list X := returns list of \textit{count} instances of \textit{x}.
+    \item app (l1 l2 : list X) : list X := appends l2 to the end of l1. Notation is l1 ++ l2. 
+    \item combine (lx : list X) (ly : list Y) : list (X*Y) := two list are threaded to become a list of pairs
+    \item split (l : list (X*Y)) : (list X) * (list Y) := list of pairs is split to become a a pair of lists. 
+    \item nth\_error (l : list X) (n : nat): option X := returns the nth element of a list in the form of Some X or it returns None. 
+\end{itemize}
+\subsection{Important Notation}
+\begin{itemize}
+    \item x::y := cons x y 
+    \item $[]$ := nil
+    \item $[$x; ...; y$]$ := cons x ... (cons y nil)
+    \item x ++ y := app x y. 
+\end{itemize}
+\subsection{Theorems}
+\begin{itemize}
+    \item app\_nil\_r : $\forall$ l:list X, l ++ [] = l.
+    \item app\_assoc : $\forall$ A (l m n:list A), l ++ m ++ n = (l ++ m) ++ n.
+    \item app\_length : $\forall$ (l1 l2 : list X), length (l1 ++ l2) = length l1 + length l2.
+    \item rev\_app\_distr: $\forall$ (l1 l2 : list X), rev (l1 ++ l2) = rev l2 ++ rev l1.
+\end{itemize}
+
+
+\section{Bool}
+\subsection{Definition}
+\begin{verbatim}
+Inductive bool : Type :=
+  | true
+  | false.
+\end{verbatim}
+\subsection{Important Functions}
+\begin{itemize}
+    \item negb (b:bool) : bool := $\neg b$  
+    \item andb (b1:bool) (b2:bool) : bool := b1 $\land$ b2 
+    \item orb (b1:bool) (b2:bool) : bool := b1 $\lor$ b2 
+    \item nandb (b1:bool) (b2:bool) : bool := $\neg (b1 \land b2)$. 
+\end{itemize}
+\subsection{Theorems}
+\begin{itemize}
+    \item negb\_involutive : $\forall$ b : bool, negb (negb b) = b.
+    \item andb\_commutative : $\forall$ g c, $g \land c$ = $c\land g$.
+\end{itemize}
+
+
+\section{Bin}
+\subsection{Definition}
+\begin{verbatim}
+Inductive bin : Type :=
+  | Z
+  | B0 (n : bin)
+  | B1 (n : bin).
+\end{verbatim}
+\subsection{Important Functions}
+\begin{itemize}
+    \item incr (m:bin) : bin := increment m
+    \item bin\_to\_nat (m:bin) : nat := binary number to natural number formatting 
+\end{itemize}
+
+\section{Prod / Pair}
+\subsection{Definition}
+\begin{verbatim}
+Inductive prod (X Y : Type) : Type :=
+| pair (x : X) (y : Y).
+\end{verbatim}
+\subsection{Important Functions}
+\begin{itemize}
+    \item fst (p : X * Y) : X := returns first element of pair
+    \item snd (p : X * Y) : Y := returns second element of pair
+\end{itemize}
+\subsection{Important Notation}
+\begin{itemize}
+    \item (x,y) := pair x y.
+    \item X * Y := prod X Y  
+\end{itemize}
+
+
+\section{Option}
+\subsection{Definition}
+\begin{verbatim}
+Inductive option (X:Type) : Type :=
+  | Some (x : X)
+  | None.
+\end{verbatim}
+
+
+
+
+
+
+\section{Important Functional Theorems}
+\begin{itemize}
+    \item f\_equal : $\forall$ (f: A $\Rightarrow$ B) (x y: A), x = y $\Rightarrow$ f x = f y.
+    \item injective (f : A $\Rightarrow$ B) := $\forall$ x y : A, f x = f y $\Rightarrow$ x = y.
+\end{itemize}
+
+\section{Important Logical Theorems}
+\begin{itemize}
+    \item conjI : A $\Rightarrow$ B $\Rightarrow$ (A $\land$ B).
+    \item conjE1 : (A $\lor$ B) $\Rightarrow$ A .
+    \item and\_commutes : (A $\land$ B) $\Rightarrow$ (B $\land$ A) .
+    \item or\_swap : (A $\lor$ B) $\Rightarrow$ (B $\lor$ A).
+    \item contrapos : (A $\Rightarrow$ B) $\Rightarrow$ $\neg$B $\Rightarrow$ $\neg$A.
+    \item dnI : A $\Rightarrow$ $\neg\neg$A.
+    \item orAB :  (A $\lor$ B) $\Rightarrow$ $\neg$ ( $\neg$A $\land$ $\neg$B).
+    \item andAB : (A $\land$ B) $\Rightarrow$ $\neg$ ( $\neg$A $\lor$ $\neg$B).
+    \item arrowAB : (A $\Rightarrow$ B) $\Rightarrow$ $\neg$ ( A $\land$ $\neg$ B).
+    \item iff\_sym : (A $\iff$ B) $\Rightarrow$ (B $\iff$ A).
+    \item iffNot : (A $\iff$ B) $\Rightarrow$ ( $\neg$A $\iff$ $\neg$B).
+\end{itemize}
+
+
+\section{Filter}
+\subsection{Definition}
+\begin{verbatim}
+Fixpoint filter {X:Type} (test: X->bool) (l:list X) : list X :=
+  match l with
+  | [] => []
+  | h :: t =>
+    if test h then h :: (filter test t)
+    else filter test t
+  end.
+\end{verbatim}
+
+\section{Map}
+\subsection{Definition}
+\begin{verbatim}
+Fixpoint map {X Y : Type} (f : X->Y) (l : list X) : list Y :=
+  match l with
+  | []     => []
+  | h :: t => (f h) :: (map f t)
+  end.
+\end{verbatim}
+\subsection{Theorems}
+\begin{itemize}
+    \item gamma : $\forall$ (f: X$\Rightarrow$Y) (l : list X) (x : X), map f (l ++ $[$x$]$) = map f l ++ $[$f x$]$.
+\end{itemize}
+
+
+\section{Fold}
+\subsection{Definition}
+\begin{verbatim}
+Fixpoint fold {X Y: Type} (f : X->Y->Y) (l : list X) (b : Y) : Y :=
+  match l with
+  | nil => b
+  | h :: t => f h (fold f t b)
+  end.
+\end{verbatim}
+
+\end{document}
